@@ -1,0 +1,64 @@
+{
+  "usuarios": [
+    {
+      "id": 1,
+      "nombre": "Brian Carreras",
+      "email": "admin@ipc.com",
+      "password": "admin123",
+      "rol": "admin"
+    },
+    {
+      "id": 2,
+      "nombre": "Paciente Ejemplo",
+      "email": "user@ipc.com",
+      "password": "user123",
+      "rol": "user"
+    }
+  ],
+  "medicos": [
+    {
+      "id": 1,
+      "nombre": "Dra. Laura López",
+      "especialidad": "Cardiología"
+    },
+    {
+      "id": 2,
+      "nombre": "Dr. Martín Gómez",
+      "especialidad": "Pediatría"
+    },
+    {
+      "id": 3,
+      "nombre": "Dra. Ana Torres",
+      "especialidad": "Dermatología"
+    }
+  ],
+  "agendas": [
+    {
+      "id": 1,
+      "medicoId": 1,
+      "fecha": "2025-10-22",
+      "horarios": ["09:00", "10:00", "11:00"]
+    },
+    {
+      "id": 2,
+      "medicoId": 2,
+      "fecha": "2025-10-23",
+      "horarios": ["14:00", "15:00"]
+    },
+    {
+      "id": 3,
+      "medicoId": 3,
+      "fecha": "2025-10-24",
+      "horarios": ["08:30", "09:30", "10:30"]
+    }
+  ],
+  "turnos": [
+    {
+      "id": 1,
+      "usuarioId": 2,
+      "agendaId": 1,
+      "horario": "10:00"
+    }
+  ],
+  "turnosCancelados": []
+}
