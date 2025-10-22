@@ -2,7 +2,7 @@
   "usuarios": [
     {
       "id": 1,
-      "nombre": "Brian Carreras",
+      "nombre": "Administrador IPC",
       "email": "admin@ipc.com",
       "password": "admin123",
       "rol": "admin"
@@ -18,17 +18,17 @@
   "medicos": [
     {
       "id": 1,
-      "nombre": "Dra. Laura López",
+      "nombre": "Dra. Elba Gallo",
       "especialidad": "Cardiología"
     },
     {
       "id": 2,
-      "nombre": "Dr. Martín Gómez",
+      "nombre": "Dr. Esteban Quito",
       "especialidad": "Pediatría"
     },
     {
       "id": 3,
-      "nombre": "Dra. Ana Torres",
+      "nombre": "Dra. Susana Oria",
       "especialidad": "Dermatología"
     }
   ],

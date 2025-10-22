@@ -1,6 +1,6 @@
 ### Turnos IPC
 
-Este proyecto es un sistema de turnos médicos para el Instituto Médico IPC. Está hecho en HTML, CSS y JavaScript.
+Este proyecto es un sistema de turnos médicos para Instituto Médico IPC. Está hecho en HTML, CSS y JavaScript.
 
 ### ¿Qué hace?
 
