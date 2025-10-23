@@ -1,16 +1,15 @@
-// Renderiza el dashboard del administrador
+//  ---------- Renderiza el dashboard del administrador con acceso completo ----------
 function renderAdminDashboard() {
   const app = document.getElementById("app");
   const usuario = obtenerUsuarioActivo();
 
-  // Botón de logout
+  // Boton de logout
   const botonLogout = `<button class="logout" onclick="cerrarSesion()">Cerrar sesión</button>`;
 
-  // Estructura del dashboard
-  app.innerHTML = `
-    ${botonLogout}
-    <section>
-      <h2>Bienvenido, ${usuario.nombre}</h2>
+  //  ---------- Estructura del panel administrativo ----------
+  const seccionAdmin = `
+    <section id="adminPanel">
+      <h2>Panel administrativo</h2>
 
       <form id="formMedico">
         <h3>Agregar profesional</h3>
@@ -18,7 +17,7 @@ function renderAdminDashboard() {
         <input type="text" id="nombreMedico" required />
         <label>Especialidad</label>
         <input type="text" id="especialidadMedico" required />
-        <button type="submit">Agregar médico</button>
+        <button type="submit" class="form-button">Agregar médico</button>
       </form>
 
       <form id="formAgenda">
@@ -31,8 +30,8 @@ function renderAdminDashboard() {
           <label>Horario</label>
           <input type="time" class="horarioInput" required />
         </div>
-        <button type="button" id="agregarHorario">Agregar otro horario</button>
-        <button type="submit">Crear agenda</button>
+        <button type="button" id="agregarHorario" class="form-button">Agregar otro horario</button>
+        <button type="submit" class="form-button">Crear agenda</button>
       </form>
 
       <section id="turnosAdmin">
@@ -42,7 +41,17 @@ function renderAdminDashboard() {
     </section>
   `;
 
-  // Cargar datos y renderizar médicos y turnos
+  // ----------  Renderiza ambas secciones: administrativa y de turnos ----------
+  app.innerHTML = `
+    ${botonLogout}
+    ${seccionAdmin}
+    <section id="userPanel"></section>
+  `;
+
+  //  ---------- Renderiza el dashboard de turnos del administrador dentro de userPanel ----------
+  renderUserDashboardEnContenedor("userPanel");
+
+  //  ---------- Cargar datos y renderizar medicos en el selector ----------
   const datos = obtenerDatos();
   const selectMedico = document.getElementById("medicoAgenda");
   selectMedico.innerHTML = "";
@@ -53,9 +62,10 @@ function renderAdminDashboard() {
     selectMedico.appendChild(option);
   });
 
+  //  ---------- Renderiza los turnos activos ----------
   renderTurnosAdmin(datos);
 
-  // Evento para agregar médico
+  //  ---------- Evento para agregar medico ----------
   document
     .getElementById("formMedico")
     .addEventListener("submit", function (e) {
@@ -86,7 +96,7 @@ function renderAdminDashboard() {
       renderAdminDashboard();
     });
 
-  // Evento para agregar horarios dinámicos
+  //  ---------- Evento para agregar horarios dinamicos ----------
   document
     .getElementById("agregarHorario")
     .addEventListener("click", function () {
@@ -98,7 +108,7 @@ function renderAdminDashboard() {
       container.appendChild(input);
     });
 
-  // Evento para crear agenda
+  //  ---------- Evento para crear agenda ----------
   document
     .getElementById("formAgenda")
     .addEventListener("submit", function (e) {
@@ -110,7 +120,8 @@ function renderAdminDashboard() {
         document.querySelectorAll(".horarioInput")
       ).map((input) => input.value);
 
-      // Validar que no exista una agenda para ese médico en esa fecha
+      // ----------  Validar que no exista una agenda para ese medico en esa fecha ----------
+      const datos = obtenerDatos();
       const existe = datos.agendas.some(function (a) {
         return a.medicoId === medicoId && a.fecha === fecha;
       });
@@ -145,8 +156,7 @@ function renderAdminDashboard() {
       renderAdminDashboard();
     });
 }
-
-// Renderiza los turnos activos en el dashboard del administrador
+//  ---------- Renderiza los turnos activos en el dashboard del administrador ----------
 function renderTurnosAdmin(datos) {
   const contenedor = document.getElementById("listaTurnos");
   contenedor.innerHTML = "";
@@ -161,15 +171,38 @@ function renderTurnosAdmin(datos) {
     div.innerHTML = `
       <p><strong>Paciente:</strong> ${usuario.nombre}</p>
       <p><strong>Profesional:</strong> ${medico.nombre}</p>
-      <p><strong>Fecha:</strong> ${agenda.fecha}</p>
+      <p><strong>Fecha:</strong> ${formatearFecha(agenda.fecha)}</p>
       <p><strong>Horario:</strong> ${turno.horario}</p>
-      <button class="cancelar-turno" onclick="cancelarTurno(${turno.id})">Cancelar turno</button>
+      <button class="cancelar-turno" onclick="cancelarTurno(${
+        turno.id
+      })">Cancelar turno</button>
     `;
     contenedor.appendChild(div);
   });
+
+  // ----------  Renderiza agendas con opcion de eliminacion ----------
+  const agendasContainer = document.createElement("section");
+  agendasContainer.innerHTML = "<h3>Agendas creadas</h3>";
+
+  datos.agendas.forEach(function (agenda) {
+    const medico = datos.medicos.find((m) => m.id === agenda.medicoId);
+    const div = document.createElement("div");
+    div.className = "agenda";
+    div.innerHTML = `
+      <p><strong>Profesional:</strong> ${medico.nombre}</p>
+      <p><strong>Fecha:</strong> ${formatearFecha(agenda.fecha)}</p>
+      <p><strong>Horarios:</strong> ${agenda.horarios.join(", ")}</p>
+      <button class="cancelar-turno" onclick="eliminarAgenda(${
+        agenda.id
+      })">Eliminar agenda</button>
+    `;
+    agendasContainer.appendChild(div);
+  });
+
+  document.getElementById("turnosAdmin").appendChild(agendasContainer);
 }
 
-// Cancela un turno desde el dashboard del administrador
+//  ---------- Cancela un turno desde el dashboard del administrador ----------
 function cancelarTurno(idTurno) {
   Swal.fire({
     title: "¿Cancelar turno?",
@@ -199,18 +232,71 @@ function cancelarTurno(idTurno) {
   });
 }
 
-// Cierra la sesión del usuario
+//  ---------- Elimina una agenda y sus turnos asociados ----------
+function eliminarAgenda(idAgenda) {
+  Swal.fire({
+    title: "¿Eliminar agenda?",
+    text: "Esta acción eliminará todos los turnos asociados.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "No",
+  }).then(function (resultado) {
+    if (resultado.isConfirmed) {
+      const datos = obtenerDatos();
+      datos.agendas = datos.agendas.filter((a) => a.id !== idAgenda);
+      datos.turnos = datos.turnos.filter((t) => t.agendaId !== idAgenda);
+      guardarDatos(datos);
+
+      Toastify({
+        text: "Agenda eliminada",
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "#ff4d4d",
+      }).showToast();
+
+      renderAdminDashboard();
+    }
+  });
+}
+
+//  ---------- Renderiza el dashboard de turnos dentro de un contenedor especifico ----------
+function renderUserDashboardEnContenedor(idContenedor) {
+  const contenedor = document.getElementById(idContenedor);
+  const usuario = obtenerUsuarioActivo();
+
+  const etiquetaAdmin =
+    usuario.rol === "admin"
+      ? `<p class="etiqueta-admin">Estás tomando turnos como administrador</p>`
+      : "";
+
+  contenedor.innerHTML = `
+    <section>
+      <h2>Turnos personales</h2>
+      ${etiquetaAdmin}
+      <div id="agendasDisponibles"></div>
+      <div id="misTurnos"></div>
+    </section>
+  `;
+
+  const datos = obtenerDatos();
+  renderAgendasDisponibles(datos, usuario);
+  renderTurnosUsuario(datos, usuario);
+}
+
+//  ---------- Cierra la sesion del usuario ----------
 function cerrarSesion() {
   logout();
   renderLogin();
 }
 
-// Guarda los datos actualizados en localStorage
+//  ---------- Guarda los datos actualizados en localStorage ----------
 function guardarDatos(datos) {
   localStorage.setItem("datosSistema", JSON.stringify(datos));
 }
 
-// Obtiene los datos desde localStorage o desde datos.json si no hay persistencia
+//  ---------- Obtiene los datos desde localStorage o desde datos.json si no hay persistencia ----------
 function obtenerDatos() {
   const datosGuardados = localStorage.getItem("datosSistema");
   return datosGuardados
@@ -222,4 +308,10 @@ function obtenerDatos() {
         turnos: [],
         turnosCancelados: [],
       };
+}
+
+// Convierte una fecha en formato aaaa-mm-dd a dd/mm/aaaa ----------
+function formatearFecha(fechaISO) {
+  const [año, mes, día] = fechaISO.split("-");
+  return `${día}/${mes}/${año}`;
 }

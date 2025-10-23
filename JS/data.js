@@ -1,12 +1,12 @@
-// Carga los datos del sistema desde localStorage o desde datos.json si es la primera vez
+//  ---------- Carga los datos del sistema desde localStorage o desde datos.json si es la primera vez ----------
 function cargarDatos() {
   const datosGuardados = localStorage.getItem("datosSistema");
 
   if (datosGuardados) {
-    // Si hay datos guardados, devolverlos como objeto
+    //  ---------- Si hay datos guardados, devolverlos como objeto ----------
     return Promise.resolve(JSON.parse(datosGuardados));
   } else {
-    // Si no hay datos guardados, cargar desde datos.json
+    //  ---------- Si no hay datos guardados, cargar desde datos.json ----------
     return fetch("./JS/datos.json")
       .then(function (respuesta) {
         if (!respuesta.ok) {
@@ -15,7 +15,7 @@ function cargarDatos() {
         return respuesta.json();
       })
       .then(function (datosIniciales) {
-        // Guardar los datos iniciales en localStorage
+        //  ---------- Guardar los datos iniciales en localStorage ----------
         localStorage.setItem("datosSistema", JSON.stringify(datosIniciales));
         return datosIniciales;
       })

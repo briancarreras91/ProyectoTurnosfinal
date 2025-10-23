@@ -11,7 +11,7 @@ body {
   line-height: 1.6;
 }
 
-/* Cabecera institucional */
+/*  ---------- Header institucional ----------  */
 header.institucional {
   display: flex;
   align-items: center;
@@ -37,14 +37,14 @@ header .titulo p {
   color: #00cfcf;
 }
 
-/* Contenedor principal */
+/*  ---------- Contenedor principal ----------  */
 main#app {
   padding: 2rem;
   max-width: 900px;
   margin: auto;
 }
 
-/* Formularios */
+/*  ---------- Formularios ----------  */
 form {
   background-color: white;
   padding: 1.5rem;
@@ -68,7 +68,9 @@ form select {
   border-radius: 4px;
 }
 
-form button {
+/*  ---------- Botones de formularios ----------  */
+form button,
+.form-button {
   background-color: #a87ff0;
   color: white;
   border: none;
@@ -79,11 +81,12 @@ form button {
   transition: background-color 0.2s ease;
 }
 
-form button:hover {
+form button:hover,
+.form-button:hover {
   background-color: #8f6bd6;
 }
 
-/* Botón logout */
+/*  ---------- Boton logout ----------  */
 .logout {
   float: right;
   background-color: #ff4d4d;
@@ -99,7 +102,7 @@ form button:hover {
   background-color: #e03e3e;
 }
 
-/* Agendas */
+/*  ---------- Agendas ----------  */
 .agenda {
   background-color: #fff;
   border-left: 5px solid #00cfcf;
@@ -121,7 +124,7 @@ form button:hover {
   margin-bottom: 0.3rem;
 }
 
-/* Botones de reserva y cancelación */
+/*  ---------- Botones de reserva y cancelacion ----------  */
 button[data-agenda],
 .cancelar-turno {
   background-color: #00cfcf;
@@ -139,7 +142,7 @@ button[data-agenda]:hover,
   background-color: #00b3b3;
 }
 
-/* Secciones */
+/*  ---------- Secciones ----------  */
 section {
   margin-bottom: 2.5rem;
 }
@@ -151,7 +154,7 @@ section h2 {
   padding-left: 0.5rem;
 }
 
-/* Login */
+/*  ---------- Login ----------  */
 section.login {
   max-width: 400px;
   margin: 4rem auto;
@@ -167,7 +170,18 @@ section.login h2 {
   color: #a87ff0;
 }
 
-/* Responsive */
+/*  ---------- Etiqueta para administrador en modo usuario ----------  */
+.etiqueta-admin {
+  font-size: 0.9rem;
+  color: #a87ff0;
+  background-color: #f0eaff;
+  padding: 0.4rem 0.8rem;
+  border-left: 4px solid #a87ff0;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+}
+
+/*  ---------- Responsive ----------  */
 @media (max-width: 600px) {
   header.institucional {
     flex-direction: column;

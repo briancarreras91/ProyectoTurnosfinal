@@ -13,5 +13,5 @@ function iniciarAplicacion() {
   }
 }
 
-// Ejecutar al cargar el script
+//  ---------- Ejecutar al cargar el script ----------
 document.addEventListener("DOMContentLoaded", iniciarAplicacion);
