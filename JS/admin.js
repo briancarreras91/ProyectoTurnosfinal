@@ -13,7 +13,7 @@ function renderAdminDashboard() {
 
       <form id="formMedico">
         <h3>Agregar profesional</h3>
-        <label>Nombre</label>
+        <label>Nombre y apellido anteponiendo el título (Dr./Dra.) </label>
         <input type="text" id="nombreMedico" required />
         <label>Especialidad</label>
         <input type="text" id="especialidadMedico" required />
